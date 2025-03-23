@@ -1,20 +1,26 @@
 from flask import Flask, jsonify
-from logging_utils import log_event
-from monitoring_utils import get_usage_stats
+from app_insights_fetch import get_api_response_times, get_db_query_performance
+from azure_monitor_fetch import get_system_health
 
 app = Flask(__name__)
 
-# Example route that logs a custom event
-@app.route('/event')
-def log_custom_event():
-    log_event('User Login', 'User logged in successfully.')
-    return jsonify({"status": "Event logged"})
+# Endpoint to get API response times
+@app.route('/monitor/api-performance')
+def api_performance():
+    data = get_api_response_times()
+    return jsonify(data)
 
-# Example route that fetches usage stats from Azure Monitor
-@app.route('/dashboard/usage')
-def dashboard_usage():
-    usage_stats = get_usage_stats()
-    return jsonify(usage_stats)
+# Endpoint to get DB performance
+@app.route('/monitor/db-performance')
+def db_performance():
+    data = get_db_query_performance()
+    return jsonify(data)
+
+# Endpoint to get system health (CPU, memory, uptime)
+@app.route('/monitor/system-health')
+def system_health():
+    data = get_system_health()
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
