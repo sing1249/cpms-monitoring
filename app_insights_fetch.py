@@ -1,14 +1,12 @@
 import requests
-import json
+import os
 
-# Replace with your Application Insights details
-APP_INSIGHTS_ID = "your_app_insights_id"
-APP_INSIGHTS_API_KEY = "your_api_key"
+# Load values from environment variables
+APP_INSIGHTS_ID = os.getenv("APP_INSIGHTS_ID")
+APP_INSIGHTS_API_KEY = os.getenv("APP_INSIGHTS_API_KEY")
 
-# Application Insights REST API URL
 API_URL = f"https://api.applicationinsights.io/v1/apps/{APP_INSIGHTS_ID}/query"
 
-# Function to fetch API response times
 def get_api_response_times():
     query = """
     requests
@@ -21,7 +19,6 @@ def get_api_response_times():
     response = requests.get(API_URL, params={"query": query}, headers=headers)
     return response.json()
 
-# Function to fetch database performance metrics
 def get_db_query_performance():
     query = """
     dependencies
