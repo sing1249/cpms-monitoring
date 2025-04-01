@@ -10,9 +10,10 @@ client = MetricsQueryClient(credential=DefaultAzureCredential())
 
 def get_system_health():
     try:
+        # Correct method to use
         response = client.query(
             resource_id=RESOURCE_ID,
-            timespan="PT1H",  # past 1 hour
+            timespan="PT1H",  # 1 hour
             metric_names=["Percentage CPU", "Available Memory", "Uptime"]
         )
         return response.metrics
